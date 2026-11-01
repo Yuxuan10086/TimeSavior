@@ -13,7 +13,7 @@ func testWhitelistCfg() *config.Config {
 		UnknownDefault: "allow",
 		DayStartHour:   4,
 		WatchWhitelistRules: []config.WatchWhitelistRule{
-			{Site: "youtube", Kind: "channel", Keyword: "Volka English", Mode: "exact"},
+			{Site: "youtube", Kind: "channel", Keyword: "Example Channel", Mode: "exact"},
 		},
 	}
 	return cfg
@@ -27,8 +27,8 @@ func TestWatchWhitelistSkipsTimer(t *testing.T) {
 	e := New(testWhitelistCfg(), store)
 	base := time.Date(2026, 7, 25, 12, 0, 0, 0, time.Local)
 
-	// Simulate player JSON for Volka English
-	body := []byte(`{"videoDetails":{"videoId":"abc","author":"Volka English","channelId":"UCxxx"}}`)
+	// Simulate player JSON for Example Channel
+	body := []byte(`{"videoDetails":{"videoId":"abc","author":"Example Channel","channelId":"UCxxx"}}`)
 	e.ObserveResponse("www.youtube.com", "/youtubei/v1/player", body, base)
 
 	var last Result
@@ -69,7 +69,7 @@ func TestWatchWhitelistURLHandle(t *testing.T) {
 	now := time.Date(2026, 7, 25, 12, 0, 0, 0, time.Local)
 	_ = e.EvaluateMeta(RequestMeta{
 		Host:    "www.youtube.com",
-		Path:    "/@VolkaEnglish/videos",
+		Path:    "/@ExampleChannel/videos",
 		Referer: "https://www.youtube.com/",
 	}, now)
 	st := e.Status(now)["sites"].(map[string]any)["youtube"].(map[string]any)

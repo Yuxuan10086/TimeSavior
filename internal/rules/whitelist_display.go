@@ -3,7 +3,7 @@ package rules
 import "strings"
 
 // DisplayChannels merges near-duplicate whitelist channel entries for UI.
-// "Volka English" + "@VolkaEnglish" → "Volka English" (prefer display name).
+// "Example Channel" + "@ExampleChannel" → "Example Channel" (prefer display name).
 func DisplayChannels(channels []string) []string {
 	type group struct {
 		display string

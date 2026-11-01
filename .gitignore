@@ -13,5 +13,8 @@ configs/secrets.yaml
 configs/secrets.yml
 **/*secrets*.yaml
 **/*secrets*.yml
+!configs/secrets.example.yaml
+# 本机个人配置（真实白名单等），不入库
+configs/local.yaml
 .env
 .env.*

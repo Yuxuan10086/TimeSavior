@@ -38,9 +38,9 @@ func TestParseVerdictReasonCap(t *testing.T) {
 
 func TestBuildUserPrompt(t *testing.T) {
 	s := BuildUserPrompt("youtube", 20, []Clip{
-		{Title: "雅思听力 Day1", Author: "A", DurationSec: 600},
+		{Title: "英语学习听力 Day1", Author: "A", DurationSec: 600},
 	})
-	if !strings.Contains(s, "youtube") || !strings.Contains(s, "雅思听力") || !strings.Contains(s, "600") {
+	if !strings.Contains(s, "youtube") || !strings.Contains(s, "英语学习听力") || !strings.Contains(s, "600") {
 		t.Fatalf("prompt missing fields: %s", s)
 	}
 }

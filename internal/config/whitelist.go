@@ -204,7 +204,7 @@ func normalizeRule(r WatchWhitelistRule) WatchWhitelistRule {
 
 func ruleKey(r WatchWhitelistRule) string {
 	if r.Kind == "channel" {
-		// Collapse "Volka English" + "@VolkaEnglish" under the same site.
+		// Collapse "Example Channel" + "@ExampleChannel" under the same site.
 		return r.Site + "|channel|" + channelIdentity(r.Keyword)
 	}
 	return r.Site + "|" + r.Kind + "|" + strings.ToLower(r.Keyword) + "|" + r.Mode
@@ -248,7 +248,7 @@ func channelFieldMatch(author, keyword, mode string) bool {
 		if strings.EqualFold(author, keyword) {
 			return true
 		}
-		// "@VolkaEnglish" vs "VolkaEnglish"; "Volka English" vs "@VolkaEnglish"
+		// "@ExampleChannel" vs "ExampleChannel"; "Example Channel" vs "@ExampleChannel"
 		ac := channelIdentity(author)
 		kc := channelIdentity(keyword)
 		return ac != "" && ac == kc
@@ -258,7 +258,7 @@ func channelFieldMatch(author, keyword, mode string) bool {
 	if strings.Contains(al, kl) {
 		return true
 	}
-	// Compact form: "Volka English" ↔ "volkaenglish" / "@VolkaEnglish"
+	// Compact form: "Example Channel" ↔ "examplechannel" / "@ExampleChannel"
 	ac := channelIdentity(author)
 	kc := channelIdentity(keyword)
 	return ac != "" && kc != "" && (ac == kc || strings.Contains(ac, kc) || strings.Contains(kc, ac))

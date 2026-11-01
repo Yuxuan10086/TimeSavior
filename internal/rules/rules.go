@@ -51,7 +51,7 @@ type PathsCfg struct {
 // WatchWhitelist: legacy per-site channel list (migrated into config.watch_whitelist_rules at startup).
 // channel_ids / video_ids are deprecated and ignored by matching (kept for yaml compatibility).
 type WatchWhitelist struct {
-	// Channels: display names or @handles, e.g. "Volka English", "@VolkaEnglish"
+	// Channels: display names or @handles, e.g. "Example Channel", "@ExampleChannel"
 	Channels []string `yaml:"channels"`
 	// ChannelIDs: deprecated — no longer used for matching.
 	ChannelIDs []string `yaml:"channel_ids"`

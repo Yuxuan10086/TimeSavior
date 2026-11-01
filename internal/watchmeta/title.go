@@ -13,7 +13,7 @@ var (
 	reExtensionSuffix = regexp.MustCompile(`(?i)\s*-\s*(tabbit|ublock\s*origin|adblock(?:\s*plus)?|tampermonkey|violentmonkey|stylus|bitwarden|1password|lastpass|grammarly|honey|rakuten|momentum|dark\s*reader)\s*$`)
 	reBiliSiteTail    = regexp.MustCompile(`(?i)\s*[-_–—]\s*哔哩哔哩(?:\s*[_\-–—]\s*bilibili)?\s*$`)
 	reBiliSiteTailEN  = regexp.MustCompile(`(?i)\s*[-_–—]\s*bilibili\s*$`)
-	// Policy chrome sometimes leaked into author ("Volka English 白名单").
+	// Policy chrome sometimes leaked into author ("Example Channel 白名单").
 	reAuthorExemptTail = regexp.MustCompile(`(?i)[\s·\-–—_|]*(白名单中?|whitelist)\s*$`)
 )
 

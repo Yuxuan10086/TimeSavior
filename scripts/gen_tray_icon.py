@@ -22,8 +22,10 @@ def draw_icon(size):
     return img.convert("RGBA")
 
 
-root = r"C:\Users\24253\Desktop\timeSavior\assets"
-ui = r"C:\Users\24253\Desktop\timeSavior\internal\ui"
+here = os.path.dirname(os.path.abspath(__file__))
+project = os.path.dirname(here)
+root = os.path.join(project, "assets")
+ui = os.path.join(project, "internal", "ui")
 os.makedirs(root, exist_ok=True)
 
 sizes = [16, 32, 48, 64]

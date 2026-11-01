@@ -8,18 +8,18 @@ import (
 func TestSyncWatchRulesMergesLegacy(t *testing.T) {
 	cfg := &Config{
 		WatchWhitelistRules: []WatchWhitelistRule{
-			{Site: "youtube", Kind: "channel", Keyword: "Volka English", Mode: "contains"},
+			{Site: "youtube", Kind: "channel", Keyword: "Example Channel", Mode: "contains"},
 		},
-		WatchTitleWhitelist: []string{"雅思", "  "},
+		WatchTitleWhitelist: []string{"英语学习", "  "},
 	}
 	cfg.SyncWatchRules(map[string][]string{
-		"youtube": {"@VolkaEnglish", "Volka English"},
+		"youtube": {"@ExampleChannel", "Example Channel"},
 	})
 	rules := cfg.WatchRules()
 	var hasTitle, channelCount int
 	var channelKeyword, channelMode string
 	for _, r := range rules {
-		if r.Kind == "title" && r.Keyword == "雅思" && r.Site == "all" && r.Mode == "contains" {
+		if r.Kind == "title" && r.Keyword == "英语学习" && r.Site == "all" && r.Mode == "contains" {
 			hasTitle++
 		}
 		if r.Kind == "channel" && r.Site == "youtube" {
@@ -34,7 +34,7 @@ func TestSyncWatchRulesMergesLegacy(t *testing.T) {
 	if channelCount != 1 {
 		t.Fatalf("expected one collapsed channel rule, got %#v", rules)
 	}
-	if channelKeyword != "Volka English" {
+	if channelKeyword != "Example Channel" {
 		t.Fatalf("prefer display name, got %q", channelKeyword)
 	}
 	if channelMode != "exact" {
@@ -45,23 +45,23 @@ func TestSyncWatchRulesMergesLegacy(t *testing.T) {
 func TestMatchWatchMetaTitleAndChannel(t *testing.T) {
 	cfg := &Config{
 		WatchWhitelistRules: []WatchWhitelistRule{
-			{Site: "all", Kind: "title", Keyword: "雅思", Mode: "contains"},
-			{Site: "youtube", Kind: "channel", Keyword: "Volka English", Mode: "exact"},
-			{Site: "youtube", Kind: "channel", Keyword: "@VolkaEnglish", Mode: "exact"},
+			{Site: "all", Kind: "title", Keyword: "英语学习", Mode: "contains"},
+			{Site: "youtube", Kind: "channel", Keyword: "Example Channel", Mode: "exact"},
+			{Site: "youtube", Kind: "channel", Keyword: "@ExampleChannel", Mode: "exact"},
 		},
 	}
 	cfg.SyncWatchRules(nil)
 
-	if hit, label := cfg.MatchWatchMeta("youtube", "雅思口语 Part2", "Someone"); !hit || label != "title:雅思" {
+	if hit, label := cfg.MatchWatchMeta("youtube", "英语学习口语 Part2", "Someone"); !hit || label != "title:英语学习" {
 		t.Fatalf("title: hit=%v label=%q", hit, label)
 	}
-	if hit, label := cfg.MatchWatchMeta("youtube", "fun video", "Volka English"); !hit || label != "Volka English" {
+	if hit, label := cfg.MatchWatchMeta("youtube", "fun video", "Example Channel"); !hit || label != "Example Channel" {
 		t.Fatalf("channel exact: hit=%v label=%q", hit, label)
 	}
-	if hit, _ := cfg.MatchWatchMeta("bilibili", "fun", "Volka English"); hit {
+	if hit, _ := cfg.MatchWatchMeta("bilibili", "fun", "Example Channel"); hit {
 		t.Fatal("youtube-only channel must not match bilibili")
 	}
-	if hit, label := cfg.MatchWatchMeta("youtube", "x", "@VolkaEnglish"); !hit || label != "Volka English" {
+	if hit, label := cfg.MatchWatchMeta("youtube", "x", "@ExampleChannel"); !hit || label != "Example Channel" {
 		t.Fatalf("handle must match collapsed display rule: hit=%v label=%q", hit, label)
 	}
 	// Only one channel row after collapse.
@@ -79,11 +79,11 @@ func TestMatchWatchMetaTitleAndChannel(t *testing.T) {
 func TestMatchWatchHayIgnoresIDs(t *testing.T) {
 	cfg := &Config{
 		WatchWhitelistRules: []WatchWhitelistRule{
-			{Site: "youtube", Kind: "channel", Keyword: "Volka English", Mode: "exact"},
+			{Site: "youtube", Kind: "channel", Keyword: "Example Channel", Mode: "exact"},
 		},
 	}
 	cfg.SyncWatchRules(nil)
-	hay := `{"author":"Volka English","channelId":"UCxxx"}`
+	hay := `{"author":"Example Channel","channelId":"UCxxx"}`
 	if hit, _ := cfg.MatchWatchHay("youtube", hay); !hit {
 		t.Fatal("expected channel name hit")
 	}
@@ -91,7 +91,7 @@ func TestMatchWatchHayIgnoresIDs(t *testing.T) {
 	if hit, _ := cfg.MatchWatchHay("youtube", idOnly); hit {
 		t.Fatal("channel/video ids must not match")
 	}
-	handleHay := `https://www.youtube.com/@VolkaEnglish/videos`
+	handleHay := `https://www.youtube.com/@ExampleChannel/videos`
 	if hit, _ := cfg.MatchWatchHay("youtube", handleHay); !hit {
 		t.Fatal("exact channel should still match /@handle in hay")
 	}
@@ -100,8 +100,8 @@ func TestMatchWatchHayIgnoresIDs(t *testing.T) {
 func TestWatchRulesDisplayOrderStable(t *testing.T) {
 	cfg := &Config{
 		WatchWhitelistRules: []WatchWhitelistRule{
-			{Site: "all", Kind: "title", Keyword: "雅思", Mode: "contains"},
-			{Site: "youtube", Kind: "channel", Keyword: "Volka English", Mode: "exact"},
+			{Site: "all", Kind: "title", Keyword: "英语学习", Mode: "contains"},
+			{Site: "youtube", Kind: "channel", Keyword: "Example Channel", Mode: "exact"},
 		},
 	}
 	cfg.SyncWatchRules(nil)

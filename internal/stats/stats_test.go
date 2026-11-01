@@ -257,40 +257,40 @@ func TestAggregateVideosByAuthor(t *testing.T) {
 	siteDur := map[string]float64{"youtube": 100, "bilibili": 40}
 	siteLast := map[string]string{"youtube": "2026-07-25T12:00:00+08:00"}
 	metas := []store.WatchLabel{
-		{Site: "youtube", Title: "最热门", Author: "", ExemptLabel: "Volka English", Exempt: true, Source: "youtube_player", TS: "2026-07-25T12:00:00+08:00"},
-		{Site: "youtube", Title: "Learn English Fast", Author: "Volka English 白名单", URL: "https://www.youtube.com/watch?v=abc", Source: "youtube_player", TS: "2026-07-25T11:00:00+08:00"},
+		{Site: "youtube", Title: "最热门", Author: "", ExemptLabel: "Example Channel", Exempt: true, Source: "youtube_player", TS: "2026-07-25T12:00:00+08:00"},
+		{Site: "youtube", Title: "Learn English Fast", Author: "Example Channel 白名单", URL: "https://www.youtube.com/watch?v=abc", Source: "youtube_player", TS: "2026-07-25T11:00:00+08:00"},
 		{Site: "bilibili", Title: "具身智能-哔哩哔哩_bilibili - Tabbit", Author: "", Source: "focus_title", TS: "2026-07-25T10:00:00+08:00"},
 	}
 	videos, _, byAuth := aggregateVideosByAuthor(siteDur, siteLast, metas, nil)
 	if len(videos) < 1 {
 		t.Fatalf("expected author rows, got %#v", videos)
 	}
-	var volka *VideoRow
+	var sample *VideoRow
 	var jushen *VideoRow
 	for i := range videos {
-		if videos[i].Author == "Volka English" {
-			volka = &videos[i]
+		if videos[i].Author == "Example Channel" {
+			sample = &videos[i]
 		}
 		if videos[i].Author == "具身智能" {
 			jushen = &videos[i]
 		}
 	}
-	if volka == nil {
-		t.Fatalf("missing Volka English row: %#v", videos)
+	if sample == nil {
+		t.Fatalf("missing Example Channel row: %#v", videos)
 	}
-	if strings.Contains(volka.Author, "白名单") || strings.Contains(strings.ToLower(volka.Author), "whitelist") {
-		t.Fatalf("author must not carry whitelist chrome: %q", volka.Author)
+	if strings.Contains(sample.Author, "白名单") || strings.Contains(strings.ToLower(sample.Author), "whitelist") {
+		t.Fatalf("author must not carry whitelist chrome: %q", sample.Author)
 	}
-	if !volka.Exempt {
+	if !sample.Exempt {
 		t.Fatal("whitelist hit must set watch_exempt separately, not glue into author")
 	}
-	if volka.Title != "Learn English Fast" {
-		t.Fatalf("dirty title leaked: %q", volka.Title)
+	if sample.Title != "Learn English Fast" {
+		t.Fatalf("dirty title leaked: %q", sample.Title)
 	}
-	if volka.DurationSec < 99 {
-		t.Fatalf("youtube duration not attributed: %v", volka.DurationSec)
+	if sample.DurationSec < 99 {
+		t.Fatalf("youtube duration not attributed: %v", sample.DurationSec)
 	}
-	if byAuth["Volka English"] < 99 {
+	if byAuth["Example Channel"] < 99 {
 		t.Fatalf("video_by_author: %v", byAuth)
 	}
 	if jushen == nil {

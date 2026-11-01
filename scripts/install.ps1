@@ -5,6 +5,8 @@
 )
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
+$CfgRel = "configs\local.yaml"
+if (-not (Test-Path (Join-Path $Root $CfgRel))) { $CfgRel = "configs\default.yaml" }
 Set-Location $Root
 New-Item -ItemType Directory -Force -Path (Join-Path $Root "data") | Out-Null
 
@@ -36,7 +38,7 @@ $Key = Join-Path $Root "data\ca\ca.key"
 Write-Host "==> [2/4] Ensure CA files"
 if (-not ((Test-Path $Cert) -and (Test-Path $Key))) {
     $proc = Start-Process -FilePath $Exe -ArgumentList @(
-        "-config", "configs\default.yaml",
+        "-config", $CfgRel,
         "-no-tray", "-no-sysproxy", "-probe"
     ) -PassThru -WindowStyle Hidden
     $deadline = (Get-Date).AddSeconds(20)
@@ -68,7 +70,7 @@ if (-not $SkipAutostart) {
 
 if (-not $NoStart) {
     Write-Host "==> Starting TimeSavior..."
-    Start-Process -FilePath $Exe -ArgumentList @("-config", "configs\default.yaml") -WorkingDirectory $Root -WindowStyle Hidden
+    Start-Process -FilePath $Exe -ArgumentList @("-config", $CfgRel) -WorkingDirectory $Root -WindowStyle Hidden
     Start-Sleep -Seconds 3
     $alive = Get-Process -Name "timesavior" -ErrorAction SilentlyContinue
     if (-not $alive) { throw "timesavior.exe failed to stay running." }

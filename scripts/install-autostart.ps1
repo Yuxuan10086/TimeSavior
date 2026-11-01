@@ -1,7 +1,8 @@
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 $Core = Join-Path $Root "timesavior.exe"
-$Config = Join-Path $Root "configs\default.yaml"
+$Config = Join-Path $Root "configs\local.yaml"
+if (-not (Test-Path $Config)) { $Config = Join-Path $Root "configs\default.yaml" }
 
 if (-not (Test-Path $Core)) { throw "Missing $Core" }
 if (-not (Test-Path $Config)) { throw "Missing $Config" }

@@ -11,7 +11,7 @@
 ## 你只需要做这一步
 
 ```powershell
-cd C:\Users\24253\Desktop\timeSavior
+cd C:\path\to\timeSavior
 .\scripts\install.ps1
 ```
 

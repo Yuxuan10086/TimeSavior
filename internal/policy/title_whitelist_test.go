@@ -18,13 +18,13 @@ func TestTitleWhitelistExemptsWatch(t *testing.T) {
 	cfg := &config.Config{
 		UnknownDefault:      "allow",
 		DayStartHour:        4,
-		WatchTitleWhitelist: []string{"雅思"},
+		WatchTitleWhitelist: []string{"英语学习"},
 	}
 	e := New(cfg, ruleStore)
 	base := time.Date(2026, 7, 25, 12, 0, 0, 0, time.Local)
 
-	ex, label := e.NoteWatchMeta("youtube", "雅思口语 Part2 高分范例", "Teacher", nil, "vid1", base)
-	if !ex || label != "title:雅思" {
+	ex, label := e.NoteWatchMeta("youtube", "英语学习口语 Part2 高分范例", "Teacher", nil, "vid1", base)
+	if !ex || label != "title:英语学习" {
 		t.Fatalf("expected title exempt, got %v %q", ex, label)
 	}
 
@@ -41,7 +41,7 @@ func TestTitleWhitelistExemptsWatch(t *testing.T) {
 		t.Fatal("youtube should not full-block under title whitelist")
 	}
 	if exempt, _ := st["watch_exempt"].(bool); !exempt {
-		t.Fatal("expected watch_exempt for 雅思 title")
+		t.Fatal("expected watch_exempt for 英语学习 title")
 	}
 }
 
@@ -53,11 +53,11 @@ func TestTitleWhitelistBodySniff(t *testing.T) {
 	cfg := &config.Config{
 		UnknownDefault:      "allow",
 		DayStartHour:        4,
-		WatchTitleWhitelist: []string{"雅思"},
+		WatchTitleWhitelist: []string{"英语学习"},
 	}
 	e := New(cfg, ruleStore)
 	now := time.Date(2026, 7, 25, 12, 0, 0, 0, time.Local)
-	body := []byte(`{"videoDetails":{"title":"雅思听力精听训练 Day3","author":"X"}}`)
+	body := []byte(`{"videoDetails":{"title":"英语学习听力精听训练 Day3","author":"X"}}`)
 	e.ObserveResponse("www.youtube.com", "/youtubei/v1/player", body, now)
 	st := e.Status(now)["sites"].(map[string]any)["youtube"].(map[string]any)
 	if exempt, _ := st["watch_exempt"].(bool); !exempt {

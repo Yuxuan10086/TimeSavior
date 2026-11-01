@@ -6,12 +6,12 @@ import (
 )
 
 func TestExtractYouTubePlayer(t *testing.T) {
-	body := []byte(`{"videoDetails":{"videoId":"bo47JoSxl1s","title":"The ONLY way to become fluent in ENGLISH","author":"Volka English","keywords":["english","learn"]}}`)
+	body := []byte(`{"videoDetails":{"videoId":"bo47JoSxl1s","title":"The ONLY way to become fluent in ENGLISH","author":"Example Channel","keywords":["english","learn"]}}`)
 	m := Extract("youtube", "www.youtube.com", "/youtubei/v1/player", body)
 	if m == nil || !m.Useful() {
 		t.Fatal("expected meta")
 	}
-	if m.VideoID != "bo47JoSxl1s" || m.Author != "Volka English" {
+	if m.VideoID != "bo47JoSxl1s" || m.Author != "Example Channel" {
 		t.Fatalf("unexpected meta: %#v", m)
 	}
 	if m.Title == "" || len(m.Tags) != 2 {
@@ -94,13 +94,13 @@ func TestCleanVideoTitleJunkYouTube(t *testing.T) {
 }
 
 func TestAuthorFromExemptLabel(t *testing.T) {
-	if got := AuthorFromExemptLabel("title:雅思"); got != "" {
+	if got := AuthorFromExemptLabel("title:英语学习"); got != "" {
 		t.Fatalf("title keyword must not become author: %q", got)
 	}
-	if got := AuthorFromExemptLabel("Volka English"); got != "Volka English" {
+	if got := AuthorFromExemptLabel("Example Channel"); got != "Example Channel" {
 		t.Fatalf("channel label: %q", got)
 	}
-	if got := AuthorFromExemptLabel("volka english"); got != "Volka English" {
+	if got := AuthorFromExemptLabel("example channel"); got != "Example Channel" {
 		t.Fatalf("legacy lower needle: %q", got)
 	}
 	if got := AuthorFromExemptLabel("白名单"); got != "" {
@@ -109,16 +109,16 @@ func TestAuthorFromExemptLabel(t *testing.T) {
 }
 
 func TestCleanAuthorStripsWhitelistSuffix(t *testing.T) {
-	if got := CleanAuthor("Volka English 白名单"); got != "Volka English" {
+	if got := CleanAuthor("Example Channel 白名单"); got != "Example Channel" {
 		t.Fatalf("strip cn: %q", got)
 	}
-	if got := CleanAuthor("Volka English whitelist"); got != "Volka English" {
+	if got := CleanAuthor("Example Channel whitelist"); got != "Example Channel" {
 		t.Fatalf("strip en: %q", got)
 	}
-	if got := CleanAuthor("Volka English · 白名单中"); got != "Volka English" {
+	if got := CleanAuthor("Example Channel · 白名单中"); got != "Example Channel" {
 		t.Fatalf("strip mid-dot: %q", got)
 	}
-	if got := CleanAuthor("Volka English"); got != "Volka English" {
+	if got := CleanAuthor("Example Channel"); got != "Example Channel" {
 		t.Fatalf("keep clean: %q", got)
 	}
 }

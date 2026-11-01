@@ -29,11 +29,11 @@ min_watch_sec: 15
 watch_whitelist_rules:
   - site: all
     kind: title
-    keyword: 雅思
+    keyword: "英语学习"
     mode: contains
   - site: youtube
     kind: channel
-    keyword: Volka English
+    keyword: "Example Channel"
     mode: exact
 
 # 大模型辅助判定（连续观看达阈值后调用；密钥见 secrets.yaml 或环境变量 SILICONFLOW_API_KEY）
@@ -57,7 +57,7 @@ llm_judge:
 free_windows: []
 
 clash_upstream:
-  enabled: false   # 人在国外，Clash 不再使用
+  enabled: true    # 经 Clash 上游时开启；直连请设为 false
   host: "127.0.0.1"
   port: 7890
   probe_seconds: 3

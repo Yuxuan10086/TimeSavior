@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TimeSavior">
+  <!-- Soft square mark -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="#1a2332"/>
+  <!-- Clock ring -->
+  <circle cx="32" cy="34" r="18" fill="none" stroke="#3d8bfd" stroke-width="3.5"/>
+  <!-- Clock hands: almost 9 o'clock  saved time -->
+  <line x1="32" y1="34" x2="32" y2="22" stroke="#e8eef6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="32" y1="34" x2="42" y2="34" stroke="#e8eef6" stroke-width="3" stroke-linecap="round"/>
+  <!-- Center dot -->
+  <circle cx="32" cy="34" r="2.5" fill="#3d8bfd"/>
+  <!-- Small shield notch / crown tick at top -->
+  <path d="M32 10 L36 16 H28 Z" fill="#3d8bfd"/>
+</svg>

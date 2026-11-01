@@ -1,0 +1,81 @@
+listen: "127.0.0.1:18888"
+data_dir: "data"
+rules_dir: "rules"
+probe_only: false
+exit_password: "timesavior"
+exit_cooldown_seconds: 60
+temp_unlock_enabled: true
+# 业务日窗口内（默认 21:30→次日 04:00）首次打开管控站推荐页起计时，单次 30 分钟；未打开不顺延。
+temp_unlock_minutes: 30
+temp_unlock_window_start: "21:30"
+temp_unlock_daily_limit: 1
+temp_unlock_weekly_limit: 1
+temp_unlock_wait_seconds: 60
+temp_unlock_question_seconds: 5
+temp_unlock_streak_needed: 10
+proxy_guard_seconds: 5
+unknown_default: allow
+day_start_hour: 4
+# 最短计入观看时长（秒）。视频站预缓存会产生孤立短 play；
+# 合并会话/归属作品后总时长低于此值的不计入播放统计，也不推进连续观看计时。
+min_watch_sec: 15
+
+# 观看白名单（统一表）：命中则不计连续观看时长。
+# site: all | youtube | bilibili | douyin …
+# kind: channel | title
+# mode: exact（精确）| contains（模糊）
+# 旧字段 watch_title_whitelist 与各站 rules/*.yaml 的 watch_whitelist.channels 仍会启动时迁入本表。
+# channel_ids / video_ids 已废弃，不再参与匹配。
+watch_whitelist_rules:
+  - site: all
+    kind: title
+    keyword: 雅思
+    mode: contains
+  - site: youtube
+    kind: channel
+    keyword: Volka English
+    mode: exact
+
+# 大模型辅助判定（连续观看达阈值后调用；密钥见 secrets.yaml 或环境变量 SILICONFLOW_API_KEY）
+llm_judge:
+  enabled: true
+  base_url: "https://api.siliconflow.cn/v1"
+  model: "deepseek-ai/DeepSeek-V4-Flash"
+  secrets_file: "secrets.yaml"
+  # 自动费用监控/熔断（默认关）。SiliconFlow 代金券不出现在 /user/info 的 balance 字段，
+  # 余额差在纯代金券账户上常为 0，无法可靠计费；账单仅官网「费用账单」可查，无公开 usage API。
+  # 关闭时：不做余额差计费、不因费用熔断；看板费用为 token×单价「仅估算」。
+  # 仅当你主要用充值余额、并接受余额差计费时再设为 true。
+  cost_monitor_enabled: false
+  # 每日费用熔断阈值（人民币，仅 cost_monitor_enabled=true 时生效）。
+  # DeepSeek-V4-Flash ≈ ¥1.0/M 输入 + ¥2.0/M 输出（按 $0.14/$0.28×7.2）
+  daily_cost_limit_cny: 0.10
+  # 熔断后行为：true = 达到 20 分钟直接 FullBlock（更安全）；false = 仅告警仍放行
+  circuit_fallback_block: true
+
+# 旧「自由时段」已由「窗口内首次打开推荐页起 30 分钟」替代；留空即可。
+free_windows: []
+
+clash_upstream:
+  enabled: false   # 人在国外，Clash 不再使用
+  host: "127.0.0.1"
+  port: 7890
+  probe_seconds: 3
+  probe_ports: [7890, 7897, 1080]
+
+watchdog:
+  enabled: true
+  check_seconds: 1
+
+logging:
+  request_log: true          # 控制台逐请求摘要（体积小）
+  audit_log: true            # 写 request-*.jsonl（见 request_all_managed）
+  watch_meta: true           # 视频标题/作者 → SQLite watch_meta
+  focus_track: true          # 前台会话 → SQLite focus_sessions
+  focus_poll_hz: 0.5
+  keep_days: 14          # JSONL 审计日志保留天数
+  raw_keep_days: 7       # SQLite 原始明细（focus/play/events/watch_meta）滑动窗口；日汇总永久保留
+  # 全量托管请求是最大体积来源。默认 false：仅记录拦截。
+  # 播放时长见 data/timesavior.db 的 play_segments，不必再写 play 类 request。
+  # 排障时可临时改为 true。
+  request_all_managed: false

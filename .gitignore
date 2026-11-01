@@ -1,0 +1,17 @@
+/timesavior.exe
+/timesavior-watchdog.exe
+/watchdog.exe
+/data/
+*.exe
+*.exe~
+*.log
+.idea/
+.vscode/
+
+# API keys / secrets — never commit
+configs/secrets.yaml
+configs/secrets.yml
+**/*secrets*.yaml
+**/*secrets*.yml
+.env
+.env.*

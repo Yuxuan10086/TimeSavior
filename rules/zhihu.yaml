@@ -1,0 +1,55 @@
+name: zhihu
+enabled: true
+kind: text
+domains:
+  - "*.zhihu.com"
+  - "zhihu.com"
+  - "*.zhimg.com"
+
+# 图文站：只 SoftBlock 推荐流，不统计连续使用时长，不因时长整站封锁。
+
+paths:
+  feed:
+    - "^/$"
+    - "^/follow"
+    - "^/hot"
+    - "^/billboard"
+    - "^/explore"
+    - "^/topic$"
+    - "^/api/v3/feed"
+    - "^/api/v4/feeds"
+    - "^/api/v3/moments"
+    - "^/api/v4/questions/.*/feeds"
+    - "^/api/v4/recommend"
+    - "^/topstory"
+  search:
+    - "^/search"
+    - "^/api/v4/search"
+    - "^/api/v4/search_v3"
+    - "^/api/v3/search"
+  content:
+    - "^/question/"
+    - "^/answer/"
+    - "^/p/"
+    - "^/zvideo/"
+    - "^/column/"
+    - "^/people/"
+    - "^/org/"
+    - "^/collection/"
+    - "^/api/v4/questions/"
+    - "^/api/v4/answers/"
+    - "^/api/v4/articles/"
+  play:
+    - "^/api/v4/zvideos"
+    - "^/zvideo/.*/play"
+  asset:
+    - "^/oauth"
+    - "^/signin"
+    - "^/signup"
+    - "^/settings"
+    - "^/api/v4/me"
+    - "^/api/v3/account"
+    - "^/favicon"
+    - "^/sc-profiler"
+    - "^/mqtt"
+    - "\\.(js|css|png|jpg|jpeg|gif|webp|svg|woff2?|ico|map)(\\?|$)"

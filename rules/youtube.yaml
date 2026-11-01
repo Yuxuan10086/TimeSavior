@@ -1,0 +1,79 @@
+name: youtube
+enabled: true
+kind: video
+domains:
+  - "*.youtube.com"
+  - "youtube.com"
+  - "*.youtube-nocookie.com"
+  - "youtu.be"
+  - "*.youtu.be"
+  - "*.ytimg.com"
+  - "*.ggpht.com"
+play_domains:
+  - "*.googlevideo.com"
+  - "googlevideo.com"
+
+# Legacy channel list (migrated into configs/default.yaml watch_whitelist_rules at startup).
+# Prefer editing watch_whitelist_rules; channel_ids / video_ids are deprecated and ignored.
+watch_whitelist:
+  channels: []
+  channel_ids: []  # deprecated
+  video_ids: []    # deprecated
+
+# SoftBlock: home / trending / shorts shelf / browse shelves.
+# At 20m continuous play → LLM judge (or FullBlock if LLM off/circuit); idle >10m resets.
+entertainment_session:
+  watch_idle_reset_minutes: 10
+  watch_block_after_minutes: 20
+
+paths:
+  feed:
+    - "^/$"
+    - "^/feed/"
+    - "^/gaming/?$"
+    - "^/premium/?$"
+    - "^/shorts/?$"
+    - "^/hashtag/"
+    - "^/youtubei/v1/browse"
+    - "^/youtubei/v1/reel"
+  search:
+    - "^/results"
+    - "^/search"
+    - "^/youtubei/v1/search"
+  content:
+    - "^/watch"
+    - "^/shorts/."
+    - "^/playlist"
+    - "^/channel/"
+    - "^/c/"
+    - "^/user/"
+    - "^/@"
+    - "^/feed/subscriptions"
+    - "^/feed/history"
+    - "^/playlists"
+    - "^/embed/"
+    - "^/live/"
+    - "^/youtubei/v1/get_transcript"
+    - "^/youtubei/v1/comment"
+    - "^/youtubei/v1/subscription"
+  play:
+    - "^/youtubei/v1/player"
+    - "^/youtubei/v1/next"
+    - "^/api/stats/watchtime"
+    - "^/api/stats/qoe"
+    - "^/videoplayback"
+    - "^/ptracking"
+  asset:
+    - "^/favicon"
+    - "^/manifest"
+    - "^/s/"
+    - "^/yts/"
+    - "^/img/"
+    - "^/account"
+    - "^/youtubei/v1/guide"
+    - "^/youtubei/v1/account"
+    - "^/youtubei/v1/notification"
+    - "^/youtubei/v1/log_event"
+    - "^/signin"
+    - "^/oops"
+    - "\\.(js|css|png|jpg|jpeg|gif|webp|svg|woff2?|ico|map|json)(\\?|$)"

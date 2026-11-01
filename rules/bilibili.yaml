@@ -1,0 +1,87 @@
+name: bilibili
+enabled: true
+kind: video
+domains:
+  - "*.bilibili.com"
+  - "bilibili.com"
+  - "*.hdslb.com"
+  - "*.biliapi.net"
+  - "*.biliapi.com"
+play_domains:
+  - "*.bilivideo.com"
+  - "*.bilivideo.cn"
+  - "*.akamaized.net"
+
+# SoftBlock: feed only. At 20m continuous play → LLM judge (idle 10m resets).
+entertainment_session:
+  watch_idle_reset_minutes: 10
+  watch_block_after_minutes: 20
+
+paths:
+  feed:
+    - "^/$"
+    - "^/index/?$"
+    - "^/anime/?$"
+    - "^/movie/?$"
+    - "^/variety/?$"
+    - "^/guochuang/?$"
+    - "^/documentary/?$"
+    - "^/v/popular"
+    - "^/x/web-interface/index"
+    - "^/x/web-interface/wbi/index"
+    - "^/x/web-interface/popular"
+    - "^/x/web-interface/ranking"
+    - "^/x/web-interface/dynamic"
+    - "^/x/polymer/web-dynamic"
+    - "^/x/v2/feed"
+    - "^/x/v2/show"
+    - "^/pgc/web/timeline"
+    - "^/pgc/page"
+  search:
+    - "^/search"
+    - "^/all$"
+    - "^/all/"
+    - "^/video$"
+    - "^/bangumi$"
+    - "^/x/web-interface/search"
+    - "^/x/web-interface/wbi/search"
+    - "^/x/web-interface/wbi/suggest"
+  content:
+    - "^/video/"
+    - "^/bangumi/"
+    - "^/cheese/"
+    - "^/read/"
+    - "^/opus/"
+    - "^/space/"
+    - "^/medialist/"
+    - "^/list/"
+    - "^/watchlater"
+    - "^/history"
+    - "^/fav"
+    - "^/account/history"
+    - "^/x/player"
+    - "^/x/web-interface/view$"
+    - "^/x/web-interface/wbi/view"
+    - "^/x/web-interface/nav"
+    - "^/x/web-interface/view/detail"
+    - "^/x/v3/fav"
+    - "^/x/v2/history"
+  play:
+    - "^/x/player/wbi/playurl"
+    - "^/x/player/playurl"
+    - "^/x/player/v2"
+    - "^/x/click-interface"
+    - "^/x/report/click"
+    - "^/x/report/heartbeat"
+    - "^/x/heartbeat"
+  asset:
+    - "^/favicon"
+    - "^/manifest"
+    - "^/passport"
+    - "^/account"
+    - "^/login"
+    - "^/x/web-interface/nav"
+    - "^/x/internal"
+    - "^/bfs/"
+    - "^/log/"
+    - "\\.(js|css|png|jpg|jpeg|gif|webp|svg|woff2?|ico|map)(\\?|$)"

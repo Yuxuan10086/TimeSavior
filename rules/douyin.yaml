@@ -1,0 +1,46 @@
+name: douyin
+enabled: true
+kind: video
+domains:
+  - "*.douyin.com"
+  - "douyin.com"
+  - "*.iesdouyin.com"
+  - "*.byteimg.com"
+play_domains:
+  - "*.douyinpic.com"
+  - "*.douyinvod.com"
+
+entertainment_session:
+  watch_idle_reset_minutes: 10
+  watch_block_after_minutes: 20
+
+paths:
+  feed:
+    - "^/$"
+    - "^/recommend"
+    - "^/jingxuan"
+    - "^/discover"
+    - "^/aweme/v[0-9]+/feed"
+    - "^/aweme/v[0-9]+/web/module/feed"
+    - "^/aweme/v[0-9]+/web/general/recommend"
+    - "^/aweme/v[0-9]+/web/channel"
+    - "^/aweme/v[0-9]+/hot"
+  search:
+    - "^/search"
+    - "^/aweme/v[0-9]+/web/general/search"
+    - "^/aweme/v[0-9]+/general/search"
+    - "^/aweme/v[0-9]+/search"
+  content:
+    - "^/video/"
+    - "^/note/"
+    - "^/user/"
+    - "^/aweme/v[0-9]+/web/aweme/detail"
+    - "^/aweme/v[0-9]+/detail"
+  play:
+    - "^/aweme/v[0-9]+/play"
+    - "^/aweme/v[0-9]+/video/play"
+  asset:
+    - "^/passport"
+    - "^/login"
+    - "^/favicon"
+    - "\\.(js|css|png|jpg|jpeg|gif|webp|svg|woff2?|ico|map)(\\?|$)"
